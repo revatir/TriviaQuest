@@ -9,13 +9,7 @@ I am designing a game where the player is embarking on a journey through a maze.
 Please see seperately attached document.
 
 #### API
-I will be using the Spotify API for background music, and plan to use different songs for the following purposes:
-- **General music** - a song that loops over while the player travels through the maze.
-- **Challenge music** - a song for when the player faces a Challenge Point.
-- **Win music** - a song for when the player wins the game.
-- **Lose music** - a song for when the player loses the game.
-
-I may also use an API that generates trivia questions.
+I will be using a Trivia API to generate random trivia questions.
 
 #### Features
 My game will include the following features:
@@ -31,3 +25,8 @@ My game will include the following features:
 - Replace the Challenge Point questions with mini games that get progressively more difficult.
 - Add multiple levels so the player can advance to a more challenging play arena after winning level 1.
 - Develop each Challenge Point into maybe a mini-village or town in which the challenging NPC resides to flesh out the story of the game. 
+- Use the Spotify API for background music, and plan to use different songs for the following purposes:
+- **General music** - a song that loops over while the player travels through the maze.
+- **Challenge music** - a song for when the player faces a Challenge Point.
+- **Win music** - a song for when the player wins the game.
+- **Lose music** - a song for when the player loses the game.

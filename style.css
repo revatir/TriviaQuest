@@ -1,0 +1,183 @@
+* {
+  box-sizing: border-box
+}
+
+body {
+background-image: url(Images/background.jpg);
+background-color: rgb(4, 177, 235);
+font-family: "VT323", monospace;
+text-align: center;
+/* border: 10px solid transparent;
+padding: -20px; */
+/* border-image: url(Images/pixel-star.png) round; */
+/* margin: 20px; */
+}
+
+.content-wrapper {
+  background-color:rgb(230, 208, 208,.5);
+  border: 10px solid transparent;
+  padding: -20px;
+  border-radius: 2rem;
+  margin: 50px 50px 25px 50px;
+}
+
+h1 {
+  font-size: 75px;
+  background: rgb(94, 143, 94);
+  color: #F7F3EF;
+  text-shadow: 6px 6px rgb(53, 99, 53); 
+  box-shadow: 3px 3px 1px rgb(53, 99, 53);
+  display: flex;
+  justify-content: center;
+  float: left;
+  margin: 30px 0px 0px 15%;
+  /* 15px 30% 30px 30% */
+  padding: 10px 125px;
+  border:2px solid rgba(29, 80, 29,.5);
+  border-radius: .25rem;
+  animation-name: game-title;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+}
+
+.star {
+  align-self: center;
+  position: relative;
+  height: 18px;
+  width: 18px;
+  opacity: .85;
+}
+
+#star1 {
+  right: 10px;
+}
+
+#star2 {
+  left: 15px;
+}
+
+menu {
+  display: flex;
+  flex-direction: column;
+  margin: 5% 10% 0 10%;
+}
+
+button {
+  font-family: "VT323", monospace;
+  font-size: 15px;
+  text-align: center;
+  background: rgb(94, 143, 94);
+  color: #F7F3EF;
+  text-shadow: 4px 3px rgb(53, 99, 53);
+  box-shadow: 2px 2px 1px rgb(53, 99, 53);
+  float: right;
+  margin: auto 25% 10px auto;
+  padding: 6px 20px;
+  border: 2px rgba(29, 80, 29,.5) solid;
+  border-radius: .25rem;
+}
+
+/* #about-button {
+  margin: 55px 250px 0px 150px;
+  padding: 5px 20px;
+}
+#reset-button {
+  margin: -10px 250px 0px 150px;
+  padding: 5px 20px;
+} */
+
+#game-border {
+  /* background-color: lightblue; */
+  clear: both;
+  position: relative;
+  height: 475px;
+  width: 1025px;
+  padding: 20px;
+  margin: auto;
+}
+
+.board {
+  position: relative;
+  background-image: url(Images/grass.png);
+  height: 100%;
+  width: 90%;
+  padding: 10px;
+  margin: auto;
+  border-radius: .5rem;
+  border: 2px 2px rgba(29, 80, 29) solid;
+  animation-name: board;
+  animation-duration: 4s;
+  animation-iteration-count: 1;
+
+}
+
+.character {
+  position: absolute; /*rendering a class absolute allows you to position it using top, left, etc. on the page.*/
+  background-image: url(Images/blerf.svg);
+  background-repeat: no-repeat;
+  color: transparent;
+  height: 50px;
+  width: 50px;
+}
+
+.plant {
+  position: absolute;
+  background-image: url(Images/plant.svg);
+  background-repeat: no-repeat;
+  color: transparent;
+  height: 50px;
+  width: 50px;
+}
+.rock {
+  position: absolute;
+  background-image: url(Images/rock.svg);
+  background-repeat: no-repeat;
+  color: transparent;
+  height: 50px;
+  width: 50px;
+}
+
+.trivia-message {
+  font-family: "VT323", monospace;
+  background: #DDBDD5;
+  color: black;
+  opacity: .75;
+  padding: 50px;
+  margin: 15%;
+}
+
+.win-message {
+  font-family: "VT323", monospace;
+  background: #DDBDD5;
+  color: #black;
+  opacity: .75;
+  padding: 50px;
+  margin: 15% auto;
+  width: 70%;
+}
+
+footer {
+  font-size: 15px;
+  color: #F7F3EF;
+  background: rgb(94, 143, 94,.7);
+  text-shadow: 3px 3px rgb(53, 99, 53); 
+  box-shadow: 1px 2px 1px rgb(53, 99, 53);
+  padding: .65%;
+  margin: 1% 40%;
+  border: 2px rgba(29, 80, 29,.5) solid;
+  border-radius: .25rem;
+}
+
+@keyframes game-title {
+  0% {
+    opacity: 0;
+    font-size: 0;
+  }
+  50% {
+    opacity: .5;
+    font-size: 35;
+  }
+  100% {
+    font-size: 75;
+  }
+}
