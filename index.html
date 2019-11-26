@@ -12,16 +12,18 @@
 
 <body>
   <div class="content-wrapper">
-    <h1><img class="star" id="star1" src=Images/pixel-star.png> <img class="star" id="star1" src=Images/pixel-star.png>
-        Trivia Quest <img class="star" id="star2" src=Images/pixel-star.png> <img class="star" id="star2"
-        src=Images/pixel-star.png> </h1> <menu>
-      <button id="about-button">About</button>
+    <h1>
+      <img class="header-star" id="star1" src=Images/pixel-star.png> <img class="header-star" id="star1"
+        src=Images/pixel-star.png> Trivia Quest <img class="header-star" id="star2" src=Images/pixel-star.png> <img
+        class="header-star" id="star2" src=Images/pixel-star.png> </h1> <menu>
+      <div>Gems Collected: <span id="scoreNode">0</span></div>
+      <div>Health Points: <span id="healthNode">3</span></div>
       <button id="reset-button">Reset Game</button>
       </menu>
-      <div id=game-border class="clearfix">
-        <div class="board">
-          <div class="character"></div>
-        </div>
+      <div class="board">
+        <div class="character"></div>
+        <div class="rocks"></div>
+        <div class="ghosts"></div>
       </div>
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <script src="app.js"></script>
