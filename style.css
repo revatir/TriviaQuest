@@ -94,7 +94,7 @@ menu {
   background-image: url(Images/grass.png);
   height: 450px;
   width: 950px;
-  padding: 25px;
+  padding: 0px;
   margin: auto;
   border-radius: .5rem;
   border: 2px 2px rgba(29, 80, 29) solid;
@@ -118,7 +118,7 @@ menu {
   width: 25px;
 }
 
-.plant {
+.ghost {
   position: absolute;
   background-image: url(Images/ghost-x1.gif);
   background-repeat: no-repeat;
@@ -127,48 +127,25 @@ menu {
   width: 50px;
 }
 
-.trivia-message {
-  font-family: "VT323", monospace;
-  background: #DDBDD5;
-  color: black;
-  opacity: .9;
-  padding: 50px;
-  margin: 15%;
-  animation-name: fade-in;
-  animation-duration: .5s;
-  animation-iteration-count: 1;
-}
-
 #question-preface {
   text-transform: uppercase;
 }
 
-.win-message {
+.message {
+  position: absolute;
   font-family: "VT323", monospace;
   background: #DDBDD5;
   color: black;
-  opacity: .9;
+  opacity: .85;
   padding: 50px;
-  margin: 15%;
-  animation-name: fade-in;
-  animation-duration: .5s;
-  animation-iteration-count: 1;
-}
-
-.lose-message {
-  font-family: "VT323", monospace;
-  background: #DDBDD5;
-  color: black;
-  opacity: .9;
-  padding: 50px;
-  margin: 15%;
+  width: 70%;
+  margin: 15% 10%;
   animation-name: fade-in;
   animation-duration: .5s;
   animation-iteration-count: 1;
 }
 
 footer {
-  position: abs
   font-size: 15px;
   color: #F7F3EF;
   background: rgb(94, 143, 94,.7);
@@ -199,7 +176,7 @@ footer {
     opacity: 0;
   }
   100% {
-    opacity: .9;
+    opacity: .85;
   }
 }
 

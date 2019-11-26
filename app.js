@@ -3,11 +3,7 @@ window.onload = function () {
   let scoreNode = document.querySelector("#scoreNode");
   let healthNode = document.querySelector("#healthNode");
   let rocks = [];
-  let plants = [
-    { x: 1, y: 2 },
-    { x: 3, y: 5 },
-    { x: 7, y: 10 },
-  ];
+  let ghosts = [];
   const question = [];
   const correctAnswer = [];
   const character = {
@@ -18,25 +14,32 @@ window.onload = function () {
     return Math.floor(Math.random() * (max));
   }
 
+  //Reset Game Function
   document.querySelector("#reset-button").addEventListener("click", function () {
+    let message = document.querySelector(".message");
     console.log("Resetting Game...");
     scoreNode.innerHTML = `0`;
     healthNode.innerHTML = `3`;
     document.querySelector(".rocks").innerHTML = '';
     rocks = [];
-    plants = [
-      { x: 1, y: 2 },
-      { x: 3, y: 5 },
-      { x: 7, y: 10 },
-    ];
+    ghosts = [];
+    const character = {
+      x: 0,
+      y: 0
+    };
     moveCharacterTo(0, 0);
-    renderPlants();
+    renderGhosts(10);
     renderRocks(100);
+    message.remove();
+    question.pop()
+    correctAnswer.pop();
   })
+  //
 
+  //Gameplay
   function renderRocks(numRocks) {
     for (let i = 0; i < numRocks; i++) {
-      rocks.push({ x: randomPosition(40), y: randomPosition(19) })
+      rocks.push({ x: randomPosition(38), y: randomPosition(18) })
       const rock = rocks[i];
       const rockElement = document.createElement('div');
       rockElement.className = 'rock';
@@ -47,6 +50,42 @@ window.onload = function () {
   };
 
   renderRocks(100);
+
+  function renderGhosts(numGhosts) {
+    const ghostElements = document.querySelectorAll('.ghost');
+    for (let i = 0; i < ghostElements.length; i++) {
+      ghostElements[i].remove();
+    }
+    for (let i = 0; i < numGhosts; i++) {
+      ghosts.push({ x: randomPosition(38), y: randomPosition(18) })
+      const ghost = ghosts[i];
+      const ghostElement = document.createElement('div');
+      ghostElement.className = 'ghost';
+      ghostElement.style.left = (ghost.x * 25).toString() + 'px';
+      ghostElement.style.top = (ghost.y * 25).toString() + 'px';
+      document.querySelector('.ghosts').appendChild(ghostElement);
+    }
+  };
+  renderGhosts(10);
+
+  function isThereAGhostAt(x, y) {
+    for (let i = 0; i < ghosts.length; i++) {
+      const ghost = ghosts[i];
+      if (ghost.x === x && ghost.y === y) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  function removeGhostAt(x, y) {
+    for (let i = 0; i < ghosts.length; i++) {
+      const ghost = ghosts[i];
+      if (ghost.x === x && ghost.y === y) {
+        ghosts.splice(i, 1);
+      }
+    }
+  };
 
   function isThereARockAt(x, y) {
     for (let i = 0; i < rocks.length; i++) {
@@ -59,7 +98,7 @@ window.onload = function () {
   };
 
   function isCoordinateInGrid(x, y) {
-    if (x < 0 || y < 0 || x > 39 || y > 19) {
+    if (x < 0 || y < 0 || x > 38 || y > 18) {
       return false;
     }
     return true
@@ -103,43 +142,6 @@ window.onload = function () {
     }
   };
 
-
-  function renderPlants() {
-    const plantElements = document.querySelectorAll('.plant');
-    for (let i = 0; i < plantElements.length; i++) {
-      plantElements[i].remove();
-    }
-    for (let i = 0; i < plants.length; i++) {
-      // plants.push({ x: randomPosition(40), y: randomPosition(19) })
-      const plant = plants[i];
-      const plantElement = document.createElement('div');
-      plantElement.className = 'plant';
-      plantElement.style.left = (plant.x * 25).toString() + 'px';
-      plantElement.style.top = (plant.y * 25).toString() + 'px';
-      document.querySelector('.board').appendChild(plantElement);
-    }
-  };
-  renderPlants();
-
-  function isThereAPlantAt(x, y) {
-    for (let i = 0; i < plants.length; i++) {
-      const plant = plants[i];
-      if (plant.x === x && plant.y === y) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  function removePlantAt(x, y) {
-    for (let i = 0; i < plants.length; i++) {
-      const plant = plants[i];
-      if (plant.x === x && plant.y === y) {
-        plants.splice(i, 1);
-      }
-    }
-  };
-
   document.body.addEventListener('keydown', function (evt) {
     const keyCode = evt.keyCode;
     if ([37, 38, 39, 40].includes(keyCode)) { //includes determines whether array includes a certain value amoung its entries, returning true/false when appropriate
@@ -174,7 +176,7 @@ window.onload = function () {
     console.log(question[0]);
     console.log(correctAnswer[0]);
     const triviaMessageElement = document.createElement('div');
-    triviaMessageElement.className = 'trivia-message';
+    triviaMessageElement.className = 'trivia-message, message';
     triviaMessageElement.innerHTML =
       `<div id="question-preface"> Answer the following question to proceed:</div>
         <div>"${question[0]}"</div>
@@ -215,7 +217,7 @@ window.onload = function () {
         healthNode.innerHTML = `${healthNumber}`;
         document.querySelector('#continue-game').addEventListener('click', function () {
           triviaMessageElement.remove();
-          renderPlants();
+          renderGhosts();
           if (scoreNode.innerHTML == 3) {
             displayWinMessage();
           }
@@ -233,7 +235,7 @@ window.onload = function () {
       return;
     }
     const winMessageElement = document.createElement('div');
-    winMessageElement.className = 'win-message';
+    winMessageElement.className = 'win-message, message';
     winMessageElement.innerHTML = `Congratulations!!! You collected (3) Escape Gems and escaped the deadly forest!`;
     document.querySelector('.board').appendChild(winMessageElement);
   };
@@ -244,7 +246,7 @@ window.onload = function () {
       return;
     }
     const loseMessageElement = document.createElement('div');
-    loseMessageElement.className = 'lose-message';
+    loseMessageElement.className = 'lose-message, message';
     loseMessageElement.innerHTML = `You lost all HP points and have died in the deadly forest.`;
     document.querySelector('.board').appendChild(loseMessageElement);
   };
@@ -253,10 +255,10 @@ window.onload = function () {
     const character = document.querySelector('.character');
     character.style.top = (y * 25).toString() + 'px';
     character.style.left = (x * 25).toString() + 'px';
-    if (isThereAPlantAt(x, y)) {
-      removePlantAt(x, y);
+    if (isThereAGhostAt(x, y)) {
+      removeGhostAt(x, y);
       displayTriviaMessage()
-      renderPlants();
+      renderGhosts();
     }
   };
 };
