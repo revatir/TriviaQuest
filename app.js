@@ -1,45 +1,89 @@
 window.onload = function () {
 
+  //Global Variables
   let scoreNode = document.querySelector("#scoreNode");
   let healthNode = document.querySelector("#healthNode");
   let rocks = [];
   let ghosts = [];
+  let crystals = [];
+  let hearts = [1, 2, 3];
   const question = [];
   const correctAnswer = [];
-  const character = {
+  let character = {
     x: 0,
     y: 0
   };
-  const randomPosition = function (max) {
-    return Math.floor(Math.random() * (max));
-  }
+  const crystalImages = new Array();
 
-  //Reset Game Function
-  document.querySelector("#reset-button").addEventListener("click", function () {
-    let message = document.querySelector(".message");
+  crystalImages[0] = new Image();
+  crystalImages[0].src = 'Images/Crystal-1.png';
+
+  crystalImages[1] = new Image();
+  crystalImages[1].src = 'Images/Crystal-2.png';
+
+  crystalImages[2] = new Image();
+  crystalImages[2].src = 'Images/Crystal-3.png';
+
+  crystalImages[3] = new Image();
+  crystalImages[3].src = 'Images/Crystal-4.png';
+
+  crystalImages[4] = new Image();
+  crystalImages[4].src = 'Images/Crystal-5.png';
+
+  const randomPosition = function (max) {
+    return Math.floor(Math.random() * (max - 1) + 1); // so the starting area of the character is clear
+  }
+  ////
+
+  ////Reset Game Function
+  document.querySelector(".reset-button").addEventListener("click", function () {
     console.log("Resetting Game...");
-    scoreNode.innerHTML = `0`;
-    healthNode.innerHTML = `3`;
-    document.querySelector(".rocks").innerHTML = '';
-    rocks = [];
-    ghosts = [];
-    const character = {
+    character = {
       x: 0,
       y: 0
     };
     moveCharacterTo(0, 0);
-    renderGhosts(10);
+
+    scoreNode.innerHTML = ``;
+    healthNode.innerHTML = `3`;
+    rocks = [];
+    ghosts = [];
+    document.querySelector(".rocks").innerHTML = '';
+    renderHearts(3);
+    renderNewGhosts(25);
     renderRocks(100);
-    message.remove();
+    let message = document.querySelector(".message");
+    if (message) {
+      message.remove();
+    };
+
     question.pop()
     correctAnswer.pop();
+    startGame();
   })
-  //
+  ////
 
   //Gameplay
-  function renderRocks(numRocks) {
-    for (let i = 0; i < numRocks; i++) {
-      rocks.push({ x: randomPosition(38), y: randomPosition(18) })
+
+  //
+  function startGame() {
+    const welcomeMessage = document.createElement('div');
+    welcomeMessage.className = 'message';
+    welcomeMessage.innerHTML =
+      `<div>Welcome, traveler! You've entered the Deadly Forest. The only way to escape is to collect (3) Escape Gems. To obtain an Escape Gem, approach a ghost and answer their question correctly. But be careful...if you answer incorrectly, they will attack. Three hits to your Health Points, and you're dead!</div>
+      <button id="continue-game">Continue</button>`;
+    document.querySelector('.board').appendChild(welcomeMessage);
+    document.querySelector('.message').addEventListener('click', function () {
+      welcomeMessage.classList.add('fade-out');
+      setTimeout(function () { welcomeMessage.remove() }, 500);
+    })
+  }
+
+  startGame();
+
+  function renderHearts(numHearts) {
+    for (let i = 0; i < numHearts; i++) {
+      rocks.push({ x: randomPosition(37), y: randomPosition(17) })
       const rock = rocks[i];
       const rockElement = document.createElement('div');
       rockElement.className = 'rock';
@@ -49,15 +93,30 @@ window.onload = function () {
     }
   };
 
-  renderRocks(100);
+  renderHearts(3);
 
-  function renderGhosts(numGhosts) {
+  function renderRocks(numRocks) {
+    for (let i = 0; i < numRocks; i++) {
+      rocks.push({ x: randomPosition(37), y: randomPosition(17) })
+      const rock = rocks[i];
+      const rockElement = document.createElement('div');
+      rockElement.className = 'rock';
+      rockElement.style.left = (rock.x * 25).toString() + 'px';
+      rockElement.style.top = (rock.y * 25).toString() + 'px';
+      document.querySelector('.rocks').appendChild(rockElement);
+    }
+  };
+
+  renderRocks(150);
+
+  function renderNewGhosts(numGhosts) {
     const ghostElements = document.querySelectorAll('.ghost');
     for (let i = 0; i < ghostElements.length; i++) {
       ghostElements[i].remove();
+      ghosts = [];
     }
     for (let i = 0; i < numGhosts; i++) {
-      ghosts.push({ x: randomPosition(38), y: randomPosition(18) })
+      ghosts.push({ x: randomPosition(37), y: randomPosition(17) })
       const ghost = ghosts[i];
       const ghostElement = document.createElement('div');
       ghostElement.className = 'ghost';
@@ -66,7 +125,22 @@ window.onload = function () {
       document.querySelector('.ghosts').appendChild(ghostElement);
     }
   };
-  renderGhosts(10);
+  renderNewGhosts(25);
+
+  function renderGhosts() {
+    const ghostElements = document.querySelectorAll('.ghost');
+    for (let i = 0; i < ghostElements.length; i++) {
+      ghostElements[i].remove();
+    }
+    for (let i = 0; i < ghosts.length; i++) {
+      const ghost = ghosts[i];
+      const ghostElement = document.createElement('div');
+      ghostElement.className = 'ghost';
+      ghostElement.style.left = (ghost.x * 25).toString() + 'px';
+      ghostElement.style.top = (ghost.y * 25).toString() + 'px';
+      document.querySelector('.ghosts').appendChild(ghostElement);
+    }
+  };
 
   function isThereAGhostAt(x, y) {
     for (let i = 0; i < ghosts.length; i++) {
@@ -83,6 +157,7 @@ window.onload = function () {
       const ghost = ghosts[i];
       if (ghost.x === x && ghost.y === y) {
         ghosts.splice(i, 1);
+        console.log(`removed ${[i]}`)
       }
     }
   };
@@ -98,7 +173,7 @@ window.onload = function () {
   };
 
   function isCoordinateInGrid(x, y) {
-    if (x < 0 || y < 0 || x > 38 || y > 18) {
+    if (x < 0 || y < 0 || x > 37 || y > 17) {
       return false;
     }
     return true
@@ -163,12 +238,22 @@ window.onload = function () {
     }
   });
 
+  function addCrystal() {
+    const crystalElement = document.createElement('img');
+    const i = Math.floor(Math.random() * (5))
+    crystalElement.className = 'crystal';
+    crystalElement.setAttribute('src', crystalImages[i].src);
+    scoreNode.appendChild(crystalElement);
+    crystals.push(crystalImages[i]);
+    console.log(`Printed crystalImages${[i]}`)
+  }
+
   async function displayTriviaMessage() {
     if (document.querySelector('.trivia-message') !== null) {
       return;
     };
 
-    const response = await axios.get('https://opentdb.com/api.php?amount=30&category=15&difficulty=easy&type=boolean');
+    const response = await axios.get('https://opentdb.com/api.php?amount=50&category=15&difficulty=easy&type=boolean');
     const results = response.data.results;
     const randomQuestion = randomPosition(15);
     question.push(results[randomQuestion].question);
@@ -185,7 +270,7 @@ window.onload = function () {
     document.querySelector('.board').appendChild(triviaMessageElement);
 
     const responseButtons = document.querySelectorAll('.response-button');
-    let scoreNumber = parseInt(scoreNode.innerHTML, 10);
+    // let scoreNumber = parseInt(scoreNode.innerHTML, 10);
     let healthNumber = parseInt(healthNode.innerHTML, 10);
 
     for (let i = 0; i < responseButtons.length; i++) {
@@ -193,16 +278,17 @@ window.onload = function () {
         let answer = evt.target.innerHTML;
         console.log(`Answered ${answer}`)
         if (answer == correctAnswer[0]) {
-          scoreNumber += 1;
+          // scoreNumber += 1;
+          addCrystal();
           console.log("That was correct!");
           triviaMessageElement.innerHTML =
-            `Correct answer! The defeated ghost gives you (1) escape gem.
+            `<div>Correct answer! The defeated ghost gives you (1) escape gem.</div>
             <button id="continue-game">Continue Game</button>`;
         } else if (answer != correctAnswer[0]) {
           console.log("Sorry, wrong answer");
           healthNumber -= 1;
           triviaMessageElement.innerHTML =
-            `Wrong answer :( The ghost viciously attacks you and you lose 1 HP.
+            `<div>Wrong answer :( The ghost viciously attacks you and you lose 1 HP.</div>
               <button id="continue-game">Continue Game</button>`
         } else {
           console.log("You must choose True or False.");
@@ -211,14 +297,15 @@ window.onload = function () {
         correctAnswer.pop();
         console.log(question);
         console.log(correctAnswer);
-        console.log(`Points: ${scoreNumber}`);
+        // console.log(`Points: ${scoreNumber}`);
         console.log(`HP: ${healthNumber}`);
-        scoreNode.innerHTML = `${scoreNumber}`;
+        // scoreNode.innerHTML = `${scoreNumber}`;
         healthNode.innerHTML = `${healthNumber}`;
         document.querySelector('#continue-game').addEventListener('click', function () {
-          triviaMessageElement.remove();
-          renderGhosts();
-          if (scoreNode.innerHTML == 3) {
+          triviaMessageElement.classList.add('fade-out');
+          setTimeout(function () { triviaMessageElement.remove(); }, 500);
+          // if (scoreNode.innerHTML == 3) {
+          if (crystals.length == 3) {
             displayWinMessage();
           }
           if (healthNode.innerHTML == 0) {
@@ -236,7 +323,9 @@ window.onload = function () {
     }
     const winMessageElement = document.createElement('div');
     winMessageElement.className = 'win-message, message';
-    winMessageElement.innerHTML = `Congratulations!!! You collected (3) Escape Gems and escaped the deadly forest!`;
+    winMessageElement.innerHTML =
+      `<div>Congratulations!!! You collected (3) Escape Gems and escaped the Deadly Forest!</div>`;
+    // <button class="reset-button">Play Again</button>;
     document.querySelector('.board').appendChild(winMessageElement);
   };
 
@@ -247,7 +336,9 @@ window.onload = function () {
     }
     const loseMessageElement = document.createElement('div');
     loseMessageElement.className = 'lose-message, message';
-    loseMessageElement.innerHTML = `You lost all HP points and have died in the deadly forest.`;
+    loseMessageElement.innerHTML =
+      `<div> You have lost all HP points! Looks like you're going to die here.</div>`
+    // < button class="reset-button" > Play Again</button > `;
     document.querySelector('.board').appendChild(loseMessageElement);
   };
 
@@ -258,7 +349,7 @@ window.onload = function () {
     if (isThereAGhostAt(x, y)) {
       removeGhostAt(x, y);
       displayTriviaMessage()
-      renderGhosts();
+      renderGhosts(25);
     }
   };
 };
