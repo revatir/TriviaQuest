@@ -6,7 +6,6 @@ window.onload = function () {
   let rocks = [];
   let ghosts = [];
   let crystals = [];
-  let hearts = [1, 2, 3];
   const question = [];
   const correctAnswer = [];
   let character = {
@@ -30,6 +29,17 @@ window.onload = function () {
   crystalImages[4] = new Image();
   crystalImages[4].src = 'Images/Crystal-5.png';
 
+  const heartImages = new Array();
+
+  heartImages[0] = new Image();
+  heartImages[0].src = 'Images/heart.png';
+
+  heartImages[1] = new Image();
+  heartImages[1].src = 'Images/heart.png';
+
+  heartImages[2] = new Image();
+  heartImages[2].src = 'Images/heart.png';
+
   const randomPosition = function (max) {
     return Math.floor(Math.random() * (max - 1) + 1); // so the starting area of the character is clear
   }
@@ -45,9 +55,11 @@ window.onload = function () {
     moveCharacterTo(0, 0);
 
     scoreNode.innerHTML = ``;
-    healthNode.innerHTML = `3`;
+    healthNode.innerHTML = ``;
+
     rocks = [];
     ghosts = [];
+    crystals = [];
     document.querySelector(".rocks").innerHTML = '';
     renderHearts(3);
     renderNewGhosts(25);
@@ -81,20 +93,6 @@ window.onload = function () {
 
   startGame();
 
-  function renderHearts(numHearts) {
-    for (let i = 0; i < numHearts; i++) {
-      rocks.push({ x: randomPosition(37), y: randomPosition(17) })
-      const rock = rocks[i];
-      const rockElement = document.createElement('div');
-      rockElement.className = 'rock';
-      rockElement.style.left = (rock.x * 25).toString() + 'px';
-      rockElement.style.top = (rock.y * 25).toString() + 'px';
-      document.querySelector('.rocks').appendChild(rockElement);
-    }
-  };
-
-  renderHearts(3);
-
   function renderRocks(numRocks) {
     for (let i = 0; i < numRocks; i++) {
       rocks.push({ x: randomPosition(37), y: randomPosition(17) })
@@ -108,6 +106,18 @@ window.onload = function () {
   };
 
   renderRocks(150);
+
+  function renderHearts(numHearts) {
+    for (let i = 0; i < numHearts; i++) {
+      const heartElement = document.createElement('img');
+      heartElement.className = 'heart';
+      heartElement.setAttribute('src', heartImages[i].src);
+      healthNode.appendChild(heartElement);
+      console.log(`Printed heartImages${[i]}`)
+    }
+  };
+
+  renderHearts(3);
 
   function renderNewGhosts(numGhosts) {
     const ghostElements = document.querySelectorAll('.ghost');
@@ -219,21 +229,27 @@ window.onload = function () {
 
   document.body.addEventListener('keydown', function (evt) {
     const keyCode = evt.keyCode;
+    const character = document.querySelector('.character');
     if ([37, 38, 39, 40].includes(keyCode)) { //includes determines whether array includes a certain value amoung its entries, returning true/false when appropriate
       evt.preventDefault();
     };
     switch (keyCode) {
       case 37:
         moveLeft();
+        // character.classList.replace("character-walking-left");
+        character.classList.toggle("character-walking-left");
         break;
       case 38:
         moveUp();
+        character.classList.toggle("character-walking-left");
         break;
       case 39:
         moveRight();
+        character.classList.toggle("character-walking-left");
         break;
       case 40:
         moveDown();
+        character.classList.toggle("character-walking-left");
         break;
     }
   });
@@ -271,7 +287,7 @@ window.onload = function () {
 
     const responseButtons = document.querySelectorAll('.response-button');
     // let scoreNumber = parseInt(scoreNode.innerHTML, 10);
-    let healthNumber = parseInt(healthNode.innerHTML, 10);
+    // let healthNumber = parseInt(healthNode.innerHTML, 10);
 
     for (let i = 0; i < responseButtons.length; i++) {
       responseButtons[i].addEventListener('click', function (evt) {
@@ -286,7 +302,9 @@ window.onload = function () {
             <button id="continue-game">Continue Game</button>`;
         } else if (answer != correctAnswer[0]) {
           console.log("Sorry, wrong answer");
-          healthNumber -= 1;
+          // healthNumber -= 1;
+          document.querySelector('#healthNode').lastChild.classList.add('fade-out');
+          setTimeout(function () { document.querySelector('#healthNode').lastChild.remove() }, 500);
           triviaMessageElement.innerHTML =
             `<div>Wrong answer :( The ghost viciously attacks you and you lose 1 HP.</div>
               <button id="continue-game">Continue Game</button>`
@@ -298,9 +316,9 @@ window.onload = function () {
         console.log(question);
         console.log(correctAnswer);
         // console.log(`Points: ${scoreNumber}`);
-        console.log(`HP: ${healthNumber}`);
+        // console.log(`HP: ${healthNumber}`);
         // scoreNode.innerHTML = `${scoreNumber}`;
-        healthNode.innerHTML = `${healthNumber}`;
+        // healthNode.innerHTML = `${healthNumber}`;
         document.querySelector('#continue-game').addEventListener('click', function () {
           triviaMessageElement.classList.add('fade-out');
           setTimeout(function () { triviaMessageElement.remove(); }, 500);
