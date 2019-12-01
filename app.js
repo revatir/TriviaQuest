@@ -1,6 +1,7 @@
 window.onload = function () {
 
   //Global Variables
+  let screenWidth = parseInt(window.screen.width, 10)
   let scoreNode = document.querySelector("#scoreNode");
   let healthNode = document.querySelector("#healthNode");
   let trees = [];
@@ -62,7 +63,13 @@ window.onload = function () {
     crystals = [];
     document.querySelector(".trees").innerHTML = '';
     renderHearts(3);
-    renderTrees(100);
+    if (screenWidth > 1100) {
+      renderTrees(150);
+    }
+    else if (screenWidth < 1100) {
+      console.log("small screen")
+      renderTrees(50);
+    }
     renderNewGhosts(25);
     let message = document.querySelector(".message");
     if (message) {
@@ -97,7 +104,13 @@ window.onload = function () {
 
   function renderTrees(numTrees) {
     for (let i = 0; i < numTrees; i++) {
-      trees.push({ x: randomPosition(37), y: randomPosition(17) })
+      if (screenWidth > 1100) {
+        trees.push({ x: randomPosition(37), y: randomPosition(17) })
+      }
+      else if (screenWidth < 1100) {
+        console.log("small screen")
+        trees.push({ x: randomPosition(12), y: randomPosition(12) })
+      }
       const tree = trees[i];
       const treeElement = document.createElement('div');
       treeElement.className = 'tree';
@@ -107,7 +120,13 @@ window.onload = function () {
     }
   };
 
-  renderTrees(150);
+  if (screenWidth > 1100) {
+    renderTrees(150);
+  }
+  else if (screenWidth < 1100) {
+    console.log("small screen")
+    renderTrees(50);
+  }
 
   function renderHearts(numHearts) {
     for (let i = 0; i < numHearts; i++) {
@@ -128,7 +147,12 @@ window.onload = function () {
       ghosts = [];
     }
     for (let i = 0; i < numGhosts; i++) {
-      ghosts.push({ x: randomPosition(37), y: randomPosition(17) })
+      if (screenWidth > 1100) {
+        ghosts.push({ x: randomPosition(37), y: randomPosition(17) })
+      }
+      else if (screenWidth < 1100) {
+        ghosts.push({ x: randomPosition(12), y: randomPosition(12) })
+      }
       const ghost = ghosts[i];
       const ghostElement = document.createElement('div');
       ghostElement.className = 'ghost';
@@ -138,7 +162,6 @@ window.onload = function () {
           ghostElement.style.top = (ghost.y * 25).toString() + 'px';
           document.querySelector('.ghosts').appendChild(ghostElement);
         } else {
-          console.log(`There was a tree at x:${ghost.x * 25} and y:${ghost.y * 25}`);
           ghostElement.style.left = (ghost.x * 25 - (25 * i)).toString() + 'px';
           ghostElement.style.top = (ghost.y * 25 - (25 * i)).toString() + 'px';
           document.querySelector('.ghosts').appendChild(ghostElement);
@@ -163,7 +186,6 @@ window.onload = function () {
           ghostElement.style.top = (ghost.y * 25).toString() + 'px';
           document.querySelector('.ghosts').appendChild(ghostElement);
         } else {
-          console.log(`There was a tree at x:${ghost.x * 25} and y:${ghost.y * 25}`);
           ghostElement.style.left = (ghost.x * 25 - (25 * i)).toString() + 'px';
           ghostElement.style.top = (ghost.y * 25 - (25 * i)).toString() + 'px';
           document.querySelector('.ghosts').appendChild(ghostElement);
@@ -320,7 +342,7 @@ window.onload = function () {
           addCrystal();
           console.log("That was correct!");
           triviaMessageElement.innerHTML =
-            `<div> Correct answer! The defeated ghost gives you(1) escape gem.</div>
+            `<div> Correct answer! The defeated ghost gives you (1) escape gem.</div>
           <button id="continue-game">Continue Game</button>`;
         } else if (answer != correctAnswer[0]) {
           console.log("Sorry, wrong answer");
