@@ -22,5 +22,9 @@ My game will include the following features:
 - Add a reset button to the game where the game is scrambled to a new board once reset. (DONE)
 - Have each point be represented by a randomly generated "Escape Gem" image that pushes to the top right of the screen when the player answers a question correctly. (DONE)
 - Have each loss be represented by a heart image, where the last image is removed when the player answers a question incorrectly. (DONE)
+- Embed music into game using Spotity. (DONE)
+- Update ghost rendering so there are no ghosts that overlap with trees. (DONE)s
+- Eliminate questions so that a question that has been asked already does not get asked again. (IN PROGRESS)
 - An initial screen where the game asks for the player's name so it can be referenced later in the game. (IN PROGRESS)
 - Make the character "walk" using the toggle class function to toggle between different images for the character when the player hits the left, right, up, and down key. (IN PROGRESS)
+- 

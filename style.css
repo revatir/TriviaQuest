@@ -124,7 +124,7 @@ menu {
   width: 25px;
 }
 
-.rock {
+.tree {
   position: absolute;
   background-image: url(Images/tree.png);
   background-repeat: no-repeat;
@@ -148,6 +148,7 @@ menu {
   animation-duration: 1s;
   animation-iteration-count: 1;
 }
+
 
 .crystal {
   height:20px;
@@ -176,10 +177,44 @@ menu {
   opacity: .85;
   padding: 20px;
   width: 70%;
-  margin: 15% 15%;
+  margin: 10% 15% 15% 15%;
   animation-name: fade-in;
   animation-duration: .5s;
   animation-iteration-count: 1;
+}
+
+.question-ghost-left {
+  position: sticky;
+  background-image: url(Images/question-ghost-left.gif);
+  background-color:grey;
+  background-repeat: no-repeat;
+  color: transparent;
+  height: 35px;
+  width: 35px;
+  left: 10%;
+  border-radius: 10%;
+  margin: 10px;
+  animation-name: fade-in;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  float: left;
+}
+
+.question-ghost-right {
+  position: sticky;
+  background-image: url(Images/question-ghost-right.gif);
+  background-color:grey;
+  background-repeat: no-repeat;
+  color: transparent;
+  height: 35px;
+  width: 35px;
+  left: 10%;
+  border-radius: 10%;
+  margin: 10px;
+  animation-name: fade-in;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  float: right;
 }
 
 iframe {

@@ -3,7 +3,7 @@ window.onload = function () {
   //Global Variables
   let scoreNode = document.querySelector("#scoreNode");
   let healthNode = document.querySelector("#healthNode");
-  let rocks = [];
+  let trees = [];
   let ghosts = [];
   let crystals = [];
   const question = [];
@@ -57,13 +57,13 @@ window.onload = function () {
     scoreNode.innerHTML = ``;
     healthNode.innerHTML = ``;
 
-    rocks = [];
+    trees = [];
     ghosts = [];
     crystals = [];
-    document.querySelector(".rocks").innerHTML = '';
+    document.querySelector(".trees").innerHTML = '';
     renderHearts(3);
+    renderTrees(100);
     renderNewGhosts(25);
-    renderRocks(100);
     let message = document.querySelector(".message");
     if (message) {
       message.remove();
@@ -83,6 +83,8 @@ window.onload = function () {
     welcomeMessage.className = 'message';
     welcomeMessage.innerHTML =
       `<div>Welcome, traveler! You've entered the Deadly Forest. The only way to escape is to collect (3) Escape Gems. To obtain an Escape Gem, approach a ghost and answer their question correctly. But be careful...if you answer incorrectly, they will attack. Three hits to your Health Points, and you're dead!</div>
+      <p></p>
+      <div> Press ▶️ on the player below if you'd like to listen to music on your quest.</div>
       <button id="continue-game">Continue</button>`;
     document.querySelector('.board').appendChild(welcomeMessage);
     document.querySelector('.message').addEventListener('click', function () {
@@ -93,19 +95,19 @@ window.onload = function () {
 
   startGame();
 
-  function renderRocks(numRocks) {
-    for (let i = 0; i < numRocks; i++) {
-      rocks.push({ x: randomPosition(37), y: randomPosition(17) })
-      const rock = rocks[i];
-      const rockElement = document.createElement('div');
-      rockElement.className = 'rock';
-      rockElement.style.left = (rock.x * 25).toString() + 'px';
-      rockElement.style.top = (rock.y * 25).toString() + 'px';
-      document.querySelector('.rocks').appendChild(rockElement);
+  function renderTrees(numTrees) {
+    for (let i = 0; i < numTrees; i++) {
+      trees.push({ x: randomPosition(37), y: randomPosition(17) })
+      const tree = trees[i];
+      const treeElement = document.createElement('div');
+      treeElement.className = 'tree';
+      treeElement.style.left = (tree.x * 25).toString() + 'px';
+      treeElement.style.top = (tree.y * 25).toString() + 'px';
+      document.querySelector('.trees').appendChild(treeElement);
     }
   };
 
-  renderRocks(150);
+  renderTrees(150);
 
   function renderHearts(numHearts) {
     for (let i = 0; i < numHearts; i++) {
@@ -130,9 +132,18 @@ window.onload = function () {
       const ghost = ghosts[i];
       const ghostElement = document.createElement('div');
       ghostElement.className = 'ghost';
-      ghostElement.style.left = (ghost.x * 25).toString() + 'px';
-      ghostElement.style.top = (ghost.y * 25).toString() + 'px';
-      document.querySelector('.ghosts').appendChild(ghostElement);
+      for (let i = 0; i < trees.length; i++) {
+        if (!isThereATreeAt(ghost.x, ghost.y)) {
+          ghostElement.style.left = (ghost.x * 25).toString() + 'px';
+          ghostElement.style.top = (ghost.y * 25).toString() + 'px';
+          document.querySelector('.ghosts').appendChild(ghostElement);
+        } else {
+          console.log(`There was a tree at x:${ghost.x * 25} and y:${ghost.y * 25}`);
+          ghostElement.style.left = (ghost.x * 25 - (25 * i)).toString() + 'px';
+          ghostElement.style.top = (ghost.y * 25 - (25 * i)).toString() + 'px';
+          document.querySelector('.ghosts').appendChild(ghostElement);
+        }
+      }
     }
   };
   renderNewGhosts(25);
@@ -146,9 +157,18 @@ window.onload = function () {
       const ghost = ghosts[i];
       const ghostElement = document.createElement('div');
       ghostElement.className = 'ghost';
-      ghostElement.style.left = (ghost.x * 25).toString() + 'px';
-      ghostElement.style.top = (ghost.y * 25).toString() + 'px';
-      document.querySelector('.ghosts').appendChild(ghostElement);
+      for (let i = 0; i < trees.length; i++) {
+        if (!isThereATreeAt(ghost.x, ghost.y)) {
+          ghostElement.style.left = (ghost.x * 25).toString() + 'px';
+          ghostElement.style.top = (ghost.y * 25).toString() + 'px';
+          document.querySelector('.ghosts').appendChild(ghostElement);
+        } else {
+          console.log(`There was a tree at x:${ghost.x * 25} and y:${ghost.y * 25}`);
+          ghostElement.style.left = (ghost.x * 25 - (25 * i)).toString() + 'px';
+          ghostElement.style.top = (ghost.y * 25 - (25 * i)).toString() + 'px';
+          document.querySelector('.ghosts').appendChild(ghostElement);
+        }
+      }
     }
   };
 
@@ -172,10 +192,10 @@ window.onload = function () {
     }
   };
 
-  function isThereARockAt(x, y) {
-    for (let i = 0; i < rocks.length; i++) {
-      const rock = rocks[i];
-      if (rock.x === x && rock.y === y) {
+  function isThereATreeAt(x, y) {
+    for (let i = 0; i < trees.length; i++) {
+      const tree = trees[i];
+      if (tree.x === x && tree.y === y) {
         return true;
       }
     }
@@ -193,7 +213,7 @@ window.onload = function () {
     if (!isCoordinateInGrid(x, y)) { //if the coordinate is not in a grid x,y that returns false, return true
       return false; //why doesn't the opposite work?
     }
-    if (isThereARockAt(x, y)) {
+    if (isThereATreeAt(x, y)) {
       return false;
     }
     return true;
@@ -280,9 +300,11 @@ window.onload = function () {
     triviaMessageElement.className = 'trivia-message, message';
     triviaMessageElement.innerHTML =
       `<div id="question-preface"> Answer the following question to proceed:</div>
-        <div>"${question[0]}"</div>
-        <button class="response-button" id="true">True</button>
-        <button class="response-button" id="false">False</button>`;
+          <p class="question-ghost-left"></p>
+          <p class="question-ghost-right"></p>
+          <div>"${question[0]}"</div>
+          <button class="response-button" id="true">True</button>
+          <button class="response-button" id="false">False</button>`;
     document.querySelector('.board').appendChild(triviaMessageElement);
 
     const responseButtons = document.querySelectorAll('.response-button');
@@ -298,16 +320,16 @@ window.onload = function () {
           addCrystal();
           console.log("That was correct!");
           triviaMessageElement.innerHTML =
-            `<div>Correct answer! The defeated ghost gives you (1) escape gem.</div>
-            <button id="continue-game">Continue Game</button>`;
+            `<div> Correct answer! The defeated ghost gives you(1) escape gem.</div>
+          <button id="continue-game">Continue Game</button>`;
         } else if (answer != correctAnswer[0]) {
           console.log("Sorry, wrong answer");
           // healthNumber -= 1;
           document.querySelector('#healthNode').lastChild.classList.add('fade-out');
           setTimeout(function () { document.querySelector('#healthNode').lastChild.remove() }, 500);
           triviaMessageElement.innerHTML =
-            `<div>Wrong answer :( The ghost viciously attacks you and you lose 1 HP.</div>
-              <button id="continue-game">Continue Game</button>`
+            `<div> Wrong answer :( The ghost viciously attacks you and you lose 1 HP.</div>
+          <button id="continue-game">Continue Game</button>`
         } else {
           console.log("You must choose True or False.");
         }
@@ -315,10 +337,10 @@ window.onload = function () {
         correctAnswer.pop();
         console.log(question);
         console.log(correctAnswer);
-        // console.log(`Points: ${scoreNumber}`);
-        // console.log(`HP: ${healthNumber}`);
-        // scoreNode.innerHTML = `${scoreNumber}`;
-        // healthNode.innerHTML = `${healthNumber}`;
+        // console.log(`Points: ${ scoreNumber }`);
+        // console.log(`HP: ${ healthNumber }`);
+        // scoreNode.innerHTML = `${ scoreNumber }`;
+        // healthNode.innerHTML = `${ healthNumber }`;
         document.querySelector('#continue-game').addEventListener('click', function () {
           triviaMessageElement.classList.add('fade-out');
           setTimeout(function () { triviaMessageElement.remove(); }, 500);
@@ -342,7 +364,9 @@ window.onload = function () {
     const winMessageElement = document.createElement('div');
     winMessageElement.className = 'win-message, message';
     winMessageElement.innerHTML =
-      `<div>Congratulations!!! You collected (3) Escape Gems and escaped the Deadly Forest!</div>`;
+      `<p></p>
+          <div>Congratulations!!! You collected (3) Escape Gems and escaped the Deadly Forest!</div>
+          <p></p>`;
     // <button class="reset-button">Play Again</button>;
     document.querySelector('.board').appendChild(winMessageElement);
   };
@@ -355,7 +379,9 @@ window.onload = function () {
     const loseMessageElement = document.createElement('div');
     loseMessageElement.className = 'lose-message, message';
     loseMessageElement.innerHTML =
-      `<div> You have lost all HP points! Looks like you're going to die here.</div>`
+      `<p></p>
+          <div>You have lost all HP points! Looks like you're going to die here.</div>
+          <p></p>`
     // < button class="reset-button" > Play Again</button > `;
     document.querySelector('.board').appendChild(loseMessageElement);
   };
